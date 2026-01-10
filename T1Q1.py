@@ -14,8 +14,9 @@ class SpeedCalculator:
         self.time = None
         self.speed = None
     
-    def get_time__speed(self):
+    def get_time_speed(self):
         """Prompts user for time, calculates speed."""
+
         while True:
             print("Input 100m Time (s): ", end='')
             usr_input = input()
@@ -28,6 +29,8 @@ class SpeedCalculator:
                 print("Time must be more than 0.\n")
             except ValueError:
                 print("Wrong Input Type! Please try again.\n")
+        
+        return 0
 
 
 if __name__ == "__main__":
