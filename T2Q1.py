@@ -23,11 +23,18 @@ class LeapYear:
     def get_leap_year(self):
         """Reiterates through each year"""
 
-        years_list = list(range(self.start_year, self.end_year))
+        first_year = None
 
-        for year in years_list:
-            if year%4 == 0 and (year%100 != 0 or year%400 == 0):
-                self.leap_years.append(year)
+        for year in range(self.start_year, self.end_year + 1):
+            if year % 4 == 0:
+                first_year = year
+                break
+        
+        if first_year is not None:
+            self.leap_years = [
+            year for year in range(first_year, self.end_year + 1,4)
+            if year % 100 != 0 or year % 400 == 0
+            ]
         
         return 0
 
