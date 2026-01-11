@@ -5,9 +5,6 @@ Encode i to 26-i
 """
 
 
-import string
-
-
 class ReverseEncoder:
     """Encodes a given string"""
 
