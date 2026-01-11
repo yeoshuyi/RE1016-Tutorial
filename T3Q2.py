@@ -41,5 +41,6 @@ if __name__ == "__main__":
         "I love Computing and I love Nanyang Technological University! "
         "This is near the 160th character. This should be clipped."
     )
+
     print(clip_character(test_string, 160))
     print(clip_word(test_string, 20))
