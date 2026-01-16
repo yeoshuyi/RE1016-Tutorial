@@ -4,6 +4,7 @@ Tutorial 1, Question 1.
 Calculates average speed of 100m race in mph based on time in seconds.
 """
 
+
 class SpeedCalculator:
     """Speed conversion for 100m race."""
 
