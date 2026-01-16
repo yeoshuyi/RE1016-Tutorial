@@ -31,10 +31,13 @@ class SpeedCalculator:
             except ValueError:
                 print("Wrong Input Type! Please try again.\n")
         
-        return 0
+        return self.speed
 
 
 if __name__ == "__main__":
     runner = SpeedCalculator()
-    runner.get_time_speed()
-    print(f"\nAverage Speed: {runner.speed:.2f}mph")
+    print(f"\nAverage Speed: {runner.get_time_speed()}mph")
+
+    #Alternatively, we can also use the class variable
+    #runner.get_time_speed()
+    #print(f"\nAverage Speed: {runner.speed}mph")
