@@ -1,10 +1,13 @@
 """
 Tutorial 2, Question 3.
 
-Generate 100 and trim to avoid long while loop.
-This reduces overhead compared to a generate and check loop.
-Where N = 100 elements, time and space complexity is O(N).
+Generate up to 100 random integers that sum up to 1000.
+Each integer ranges 1 - 20.
+
+3 methods of generation is proposed, using:
+a) Bruteforce, b) Min Batch, c) Max Batch
 """
+
 
 import numpy as np
 import time
