@@ -200,12 +200,13 @@ def main():
         case 5:
             current_time = time.time()
             rand.generate_list_circular_buffer()
+    end_time = time.time()
     
     print(
         f"-------------------------------------------------------------\n"
         f"List contains: {rand.rand_list}\n"
         f"Random numbers summed to {rand.rand_sum} with {len(rand.rand_list)} elements.\n"
-        f"Generation took {(time.time()-current_time) * 1000 * 1000:.3f}us.\n"
+        f"Generation took {(end_time-current_time) * 1000 * 1000:.3f}us.\n"
         f"-------------------------------------------------------------"
     )
 
