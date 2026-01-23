@@ -5,8 +5,11 @@ Generate up to MAX_LIST_SIZE random integers that sum exceeds MAX_LIST_SUM.
 Each integer ranges MIN_RANDOM to MAX_RANDOM.
 
 4 methods of generation is proposed, using:
-a) Bruteforce, b) Min Batch, c) Max Batch, d) Max Batch with Cumulative Sum
-All methods follow O(n) time and space complexity.
+a) Bruteforce               Time: O(N)      170 / 1600 us Avg
+b) Min Batch                Time: O(N)      120 / 900  us Avg
+c) Max Batch                Time: O(N)      42  / 100  us Avg
+d) Max Batch (Vectorized)   Time: O(N)      80  / 120  us Avg
+e) Circular Buffer          Time: O(log N)  30  / 65   us Avg
 """
 
 
@@ -18,7 +21,6 @@ MAX_LIST_SIZE = 100
 MAX_LIST_SUM = 1000
 MIN_RANDOM = 1
 MAX_RANDOM = 20
-
 
 class RandomNumGen:
     """Generate list of random numbers, with 3 methods available."""
@@ -34,6 +36,11 @@ class RandomNumGen:
 
         #Standardising seed for reproducability when debugging
         np.random.seed(0) if __debug__ else np.random.seed(int(time.time()))
+
+        #Initialise buffer for circular buffer method
+        self.buffer = np.random.randint(MIN_RANDOM, MAX_RANDOM+1, size=MAX_LIST_SIZE*10)
+        self.buffer_cumsum = np.cumsum(self.buffer)
+
     
     def list_reset(self):
         """Resets rand_list and rand_sum to empty."""
@@ -113,7 +120,7 @@ class RandomNumGen:
         """
 
         self.list_reset()
-        temporary_list = (np.random.randint(MIN_RANDOM, MAX_RANDOM+1, size=MAX_LIST_SIZE))
+        temporary_list = np.random.randint(MIN_RANDOM, MAX_RANDOM+1, size=MAX_LIST_SIZE)
         self.rand_sum = np.sum(temporary_list)
         if self.rand_sum <= MAX_LIST_SUM:
             self.rand_list.extend(temporary_list.tolist())
@@ -126,6 +133,23 @@ class RandomNumGen:
         self.rand_list.extend(temporary_list.tolist()[:index])
         self.rand_sum = np.sum(self.rand_list)
         return self.rand_list
+    
+    def generate_list_circular_buffer(self):
+        """
+        Generate a list of I until either the sum reaches MAX_LIST_SUM, or len(list) reaches MAX_LIST_SIZE,
+        where I is an integer ranging from MIN_RANDOM to MAX_RANDOM.\n
+        Circular buffer method uses a pre-generated buffer and selects a random start index.
+        The pre-generated cumsum is used to trim the list through pointer manipulation.\n
+        Returns list by defualt.
+        """
+
+        start_index = np.random.randint(0, MAX_LIST_SIZE*9)
+        offset = self.buffer_cumsum[start_index-1]
+        sum_diff = MAX_LIST_SUM + offset - 1
+        list_range = self.buffer_cumsum[start_index : start_index + MAX_LIST_SIZE]
+        index_diff = np.searchsorted(list_range, sum_diff, "right") + 1
+        self.rand_list.extend(self.buffer[start_index:start_index+index_diff].tolist())
+        self.rand_sum = self.buffer_cumsum[start_index+index_diff] - offset
 
 
 
@@ -140,10 +164,11 @@ def main():
                 f"2. Minbatch Method\n"
                 f"3. Maxbatch Method\n"
                 f"4. Cumulative Sum Maxbatch Method\n"
+                f"5. Circular Buffer Method\n"
                 f"Select: "
             )
             option = int(option)
-            if 0 < option < 5:
+            if 0 < option < 6:
                 break
             else:
                 print(f"\n-------------------------------------------------------------\n"
@@ -172,6 +197,9 @@ def main():
         case 4:
             current_time = time.time()
             rand.generate_list_maxbatch_vec()
+        case 5:
+            current_time = time.time()
+            rand.generate_list_circular_buffer()
     
     print(
         f"-------------------------------------------------------------\n"
