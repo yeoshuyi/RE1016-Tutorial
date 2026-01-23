@@ -9,7 +9,9 @@ a) Bruteforce               Time: O(N)      170 / 1600 us Avg
 b) Min Batch                Time: O(N)      120 / 900  us Avg
 c) Max Batch                Time: O(N)      42  / 100  us Avg
 d) Max Batch (Vectorized)   Time: O(N)      80  / 120  us Avg
-e) Circular Buffer          Time: O(log N)  30  / 65   us Avg
+e) Circular Buffer*         Time: O(log N)  30  / 65   us Avg
+
+*Circular Buffer uses 10x more memory and has limited randomness.
 """
 
 
