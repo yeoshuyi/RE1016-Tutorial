@@ -1,11 +1,12 @@
 """
 Tutorial 2, Question 3.
 
-Generate up to MAX_LIST_SIZE random integers that sum up to MAX_LIST_SUM.
-Each integer ranges MIN_RANDOM - MAX_RANDOM.
+Generate up to MAX_LIST_SIZE random integers that sum exceeds MAX_LIST_SUM.
+Each integer ranges MIN_RANDOM to MAX_RANDOM.
 
 4 methods of generation is proposed, using:
 a) Bruteforce, b) Min Batch, c) Max Batch, d) Max Batch with Cumulative Sum
+All methods follow O(n) time and space complexity.
 """
 
 
@@ -66,7 +67,6 @@ class RandomNumGen:
         Returns list by defualt.
         """
 
-        #Generate 50 numbers immediately, guranteed to not exceed 1000
         self.list_reset()
         initial_size = min(MAX_LIST_SUM // MAX_RANDOM, MAX_LIST_SIZE)
         self.rand_list.extend(np.random.randint(MIN_RANDOM, MAX_RANDOM+1, size=initial_size).tolist())
@@ -88,7 +88,6 @@ class RandomNumGen:
         Returns list by defualt.
         """
 
-        #Generate 100 numbers immediately without checking sum <1000
         self.list_reset()
         self.rand_list.extend(np.random.randint(MIN_RANDOM, MAX_RANDOM+1, size=MAX_LIST_SIZE).tolist())
         self.rand_sum = np.sum(self.rand_list)
@@ -113,19 +112,18 @@ class RandomNumGen:
         Returns list by defualt.
         """
 
-        #Generate 100 numbers immediately without checking sum <1000
         self.list_reset()
-        temporary_list = (np.random.randint(MIN_RANDOM, MAX_RANDOM+1, size=MAX_LIST_SIZE).tolist())
+        temporary_list = (np.random.randint(MIN_RANDOM, MAX_RANDOM+1, size=MAX_LIST_SIZE))
         self.rand_sum = np.sum(temporary_list)
         if self.rand_sum <= MAX_LIST_SUM:
-            self.rand_list.extend(temporary_list)
+            self.rand_list.extend(temporary_list.tolist())
             return self.rand_list
     
         cumulative_sum = np.cumsum(temporary_list)
 
         #Find index where cumulative sum first exceeds 1000
         index = np.searchsorted(cumulative_sum, MAX_LIST_SUM-1, "right") + 1
-        self.rand_list.extend(temporary_list[:index])
+        self.rand_list.extend(temporary_list.tolist()[:index])
         self.rand_sum = np.sum(self.rand_list)
         return self.rand_list
 
