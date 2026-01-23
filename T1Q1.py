@@ -37,7 +37,7 @@ class SpeedCalculator:
 if __name__ == "__main__":
     runner = SpeedCalculator()
     print(f"\nAverage Speed: {runner.get_time_speed()}mph")
-
+    
     #Alternatively, we can also use the class variable
     #runner.get_time_speed()
     #print(f"\nAverage Speed: {runner.speed}mph")
